@@ -45,6 +45,12 @@ export default {
       this.isMaxSize = false;
       this.setState();
     })
+    win.on('move', this.throttle(() => {
+      console.log(1);
+    }))
+    win.on('resize', this.throttle(() => {
+      console.log(2);
+    }))
   },
   methods: {
     close() {
@@ -60,6 +66,16 @@ export default {
     maxsize() {
       remote.getCurrentWindow().maximize();
     },
+    throttle(fn) {
+      let timeout = null;
+      return function() {
+        if(timeout) return;
+        timeout = setTimeout(() => {
+          fn.apply(this, arguments);
+          timeout = null;
+        },2000)
+      }
+    }
   },
 };
 </script>
